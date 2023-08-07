@@ -5,10 +5,10 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
-import clientRoutes from "./routes/client";
-import generalRoutes from "./routes/general";
-import managementRoutes from "./routes/management";
-import salesRoutes from "./routes/sales";
+import clientRoutes from "./routes/client.js";
+import generalRoutes from "./routes/general.js";
+import managementRoutes from "./routes/management.js";
+import salesRoutes from "./routes/sales.js";
 
 /* Boilerplate Configurational Code */
 dotenv.config();
@@ -26,3 +26,18 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+
+/* Connecting Mongoose */
+const PORT = process.env.PORT || 9000;
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
